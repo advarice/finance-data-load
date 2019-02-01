@@ -13,12 +13,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @SpringBootApplication
 @ComponentScan({"config"})
 public class FinancialDataLoader implements CommandLineRunner {
 
+
     @Autowired
-    private ApplicationContext ctx;
+    List<IAction> actionList;
 
     public static void main(String[] args){
         System.out.println("haha");
@@ -37,10 +40,10 @@ public class FinancialDataLoader implements CommandLineRunner {
         //System.out.println(wp.toString());
         //String s=(String)ctx.getBean("testString");
         //dao.insert(wp);
-        IAction buildRestUrlAction = (BuildRestUrlAction)ctx.getBean("buildRestUrlAction");
-        IAction loadDataAction = (LoadDataAction)ctx.getBean("loadDataAction");
-        buildRestUrlAction.action();
-        loadDataAction.action();
+        for(IAction action:actionList){
+            System.out.println(action.getClass().toString());
+            action.action();;
+        }
         System.exit(0);
     }
 

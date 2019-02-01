@@ -3,7 +3,6 @@ package action;
 import dao.FinancialDataDao;
 import entitiy.WeeklyPrices;
 import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,8 +29,8 @@ public class LoadDataAction implements IAction{
         for(String url:actionModel.getUrls()){
             Runnable r =()->{
                 System.out.println(url);
-                WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
-                financialDataDao.insert(wp);
+                //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
+                //financialDataDao.insert(wp);
                 System.out.println("daaaa");
                 System.out.println("end");
 

@@ -2,6 +2,7 @@ package config;
 
 import action.ActionModel;
 import action.BuildRestUrlAction;
+import action.IAction;
 import action.LoadDataAction;
 import dao.FinancialDataDao;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class AppConfig {
@@ -52,6 +55,14 @@ public class AppConfig {
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
+    }
+
+    @Bean
+    public List<IAction> actionList(){
+        List<IAction> actionList=new ArrayList<>();
+        actionList.add(buildRestUrlAction());
+        actionList.add(loadDataAction());
+        return actionList;
     }
 
 }

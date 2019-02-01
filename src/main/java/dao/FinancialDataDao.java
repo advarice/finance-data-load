@@ -8,13 +8,15 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class FinancialDataDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static final String batchInsertWeekly="INSERT INTO STOCK_WEEKLY_DATA (STOCK_SYMBOL,TIME, OPEN,HIGH,LOW,CLOSE,VOLUME) VALUES (?,?,?,?,?,?,?)";
+    private static final String BATCHI_NSERT_WEEKLY="INSERT INTO STOCK_WEEKLY_DATA (STOCK_SYMBOL,TIME, OPEN,HIGH,LOW,CLOSE,VOLUME) VALUES (?,?,?,?,?,?,?)";
+    private static final String GET_RANDO_MSYMBOL="SELECT STOCK_SYMBOL FROM STOCK ORDER BY RAND() LIMIT 10";
 
     public FinancialDataDao(DriverManagerDataSource datasource){
         jdbcTemplate=new JdbcTemplate(datasource);
@@ -26,8 +28,14 @@ public class FinancialDataDao {
 
     }
 
+    public List<String> getRandStockSymbol(int n){
+        //List<String> stockSymbolList= this.jdbcTemplate.queryForList(getRandomSymbol,n,String.class);
+        List<String> stockSymbolList= this.jdbcTemplate.queryForList(GET_RANDO_MSYMBOL,String.class);
+        return stockSymbolList;
+    }
+
     public void insert(WeeklyPrices wp){
-        this.jdbcTemplate.batchUpdate(batchInsertWeekly, new BatchPreparedStatementSetter() {
+        this.jdbcTemplate.batchUpdate(BATCHI_NSERT_WEEKLY, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                 preparedStatement.setString(1,wp.getMetaData().get("2. Symbol"));

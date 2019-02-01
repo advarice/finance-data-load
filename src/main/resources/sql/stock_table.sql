@@ -1,6 +1,7 @@
-CREATE TABLE `stock_analysis`.`stock` (
-  `stock` VARCHAR(10) NOT NULL,
-  `name` VARCHAR(45) NULL,
-  `sector` VARCHAR(100) NULL,
-  `industry` VARCHAR(200) NULL,
-  PRIMARY KEY (`stock`));
+CREATE TABLE `stock` (
+  `stock_symbol` varchar(10) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `sector` varchar(100) DEFAULT NULL,
+  `industry` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`stock_symbol`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

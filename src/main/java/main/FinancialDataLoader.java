@@ -24,8 +24,6 @@ public class FinancialDataLoader implements CommandLineRunner {
     private List<IAction> actionList;
 
     public static void main(String[] args){
-        System.out.println("haha");
-
         SpringApplication.run(FinancialDataLoader.class,args);
 
     }
@@ -41,7 +39,6 @@ public class FinancialDataLoader implements CommandLineRunner {
         //String s=(String)ctx.getBean("testString");
         //dao.insert(wp);
         for(IAction action:actionList){
-            System.out.println(action.getClass().toString());
             action.action();;
         }
         System.exit(0);

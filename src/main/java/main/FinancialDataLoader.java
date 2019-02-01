@@ -21,7 +21,7 @@ public class FinancialDataLoader implements CommandLineRunner {
 
 
     @Autowired
-    List<IAction> actionList;
+    private List<IAction> actionList;
 
     public static void main(String[] args){
         System.out.println("haha");

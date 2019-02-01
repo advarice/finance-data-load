@@ -16,7 +16,7 @@ public class FinancialDataDao {
     private JdbcTemplate jdbcTemplate;
 
     private static final String BATCHI_NSERT_WEEKLY="INSERT INTO STOCK_WEEKLY_DATA (STOCK_SYMBOL,TIME, OPEN,HIGH,LOW,CLOSE,VOLUME) VALUES (?,?,?,?,?,?,?)";
-    private static final String GET_RANDO_MSYMBOL="SELECT STOCK_SYMBOL FROM STOCK ORDER BY RAND() LIMIT 10";
+    private static final String GET_RANDO_MSYMBOL="SELECT STOCK_SYMBOL FROM STOCK ORDER BY RAND() LIMIT ?";
 
     public FinancialDataDao(DriverManagerDataSource datasource){
         jdbcTemplate=new JdbcTemplate(datasource);
@@ -30,7 +30,7 @@ public class FinancialDataDao {
 
     public List<String> getRandStockSymbol(int n){
         //List<String> stockSymbolList= this.jdbcTemplate.queryForList(getRandomSymbol,n,String.class);
-        List<String> stockSymbolList= this.jdbcTemplate.queryForList(GET_RANDO_MSYMBOL,String.class);
+        List<String> stockSymbolList= this.jdbcTemplate.queryForList(GET_RANDO_MSYMBOL,String.class,n);
         return stockSymbolList;
     }
 

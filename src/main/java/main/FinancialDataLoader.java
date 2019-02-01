@@ -39,7 +39,7 @@ public class FinancialDataLoader implements CommandLineRunner {
         //String s=(String)ctx.getBean("testString");
         //dao.insert(wp);
         for(IAction action:actionList){
-            action.action();;
+            action.action();
         }
         System.exit(0);
     }

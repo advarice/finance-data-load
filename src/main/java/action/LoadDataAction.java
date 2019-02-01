@@ -1,8 +1,8 @@
 package action;
 
 import dao.FinancialDataDao;
-import entitiy.WeeklyPrices;
 import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class LoadDataAction implements IAction{
 
     @Autowired
@@ -29,17 +30,14 @@ public class LoadDataAction implements IAction{
         for(String url:actionModel.getUrls()){
             Runnable r =()->{
                 System.out.println(url);
+                log.info("heu");
                 //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
                 //financialDataDao.insert(wp);
-                System.out.println("daaaa");
-                System.out.println("end");
 
             };
             executorService.submit(r);
-            System.out.println("hey");
 
         }
-        System.out.println("dsdsad");
         executorService.shutdown();
         try{
             executorService.awaitTermination(20, TimeUnit.MINUTES);

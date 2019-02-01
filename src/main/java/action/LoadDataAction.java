@@ -25,12 +25,11 @@ public class LoadDataAction implements IAction{
 
     @Override
     public void action() {
-        ThreadFactory tf = new ThreadFactoryBuilder().setNameFormat("Rest Call--TPool --%d").build();
+        ThreadFactory tf = new ThreadFactoryBuilder().setNameFormat("Thread --%d").build();
         ExecutorService executorService= Executors.newFixedThreadPool(4,tf);
         for(String url:actionModel.getUrls()){
             Runnable r =()->{
-                System.out.println(url);
-                log.info("heu");
+                log.info(url);
                 //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
                 //financialDataDao.insert(wp);
 
@@ -40,7 +39,7 @@ public class LoadDataAction implements IAction{
         }
         executorService.shutdown();
         try{
-            executorService.awaitTermination(20, TimeUnit.MINUTES);
+            executorService.awaitTermination(5, TimeUnit.MINUTES);
         }
         catch(java.lang.InterruptedException e){
             e.printStackTrace();

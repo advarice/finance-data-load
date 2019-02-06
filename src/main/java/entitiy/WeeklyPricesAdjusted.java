@@ -1,6 +1,5 @@
 package entitiy;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WeeklyPrices {
+public class WeeklyPricesAdjusted {
 
     @JsonProperty("Meta Data")
     private Map<String,String> metaData;
@@ -21,26 +20,28 @@ public class WeeklyPrices {
         this.metaData = metaData;
     }
 
-    public List<TimeSeries> getStocks() {
+    public List<TimeSeriesAdjusted> getStocks() {
         return stocks;
     }
 
-    public void setStocks(List<TimeSeries> stocks) {
+    public void setStocks(List<TimeSeriesAdjusted> stocks) {
         this.stocks = stocks;
     }
 
-    private List<TimeSeries> stocks = new ArrayList<>();
+    private List<TimeSeriesAdjusted> stocks = new ArrayList<>();
 
-    @JsonProperty("Weekly Time Series")
+    @JsonProperty("Weekly Adjusted Time Series")
     private void unpackNested(Map<String,Map<String,String>>weeklyTimeSeries){
 
         for(Map.Entry<String,Map<String,String>> e:weeklyTimeSeries.entrySet()){
-            TimeSeries temp = new TimeSeries();
+            TimeSeriesAdjusted temp = new TimeSeriesAdjusted();
             temp.setOpen(e.getValue().get("1. open"));
             temp.setHigh(e.getValue().get("2. high"));
             temp.setLow(e.getValue().get("3. low"));
             temp.setClose(e.getValue().get("4. close"));
-            temp.setVolume(e.getValue().get("5. volume"));
+            temp.setAdjustedClose(e.getValue().get("5. adjusted close"));
+            temp.setVolume(e.getValue().get("6. volume"));
+            temp.setDividendAmount(e.getValue().get("7. dividend amount"));
             temp.setTime(e.getKey());
             stocks.add(temp);
 
@@ -51,9 +52,9 @@ public class WeeklyPrices {
 
     @Override
     public String toString() {
-        return "WeeklyPrices{" +
+        return "WeeklyPricesAdjusted{" +
                 "metaData=" + metaData +
-                ", ts=" + stocks +
+                ", stocks=" + stocks +
                 '}';
     }
 }

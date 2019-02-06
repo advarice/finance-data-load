@@ -19,8 +19,8 @@ public class BuildRestUrlAction implements IAction{
 
     @Override
     public void action() {
-
-        symbols= financialDataDao.getRandStockSymbol(15);
+        //load n number of stocks information to the database
+        symbols= financialDataDao.getRandStockSymbol(500);
 
         for(String symbol:symbols){
             actionModel.getUrls().add(String.format("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=%s&apikey=placeholder", symbol));

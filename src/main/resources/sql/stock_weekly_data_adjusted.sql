@@ -1,0 +1,12 @@
+CREATE TABLE `stock_weekly_data_adjusted` (
+  `STOCK_SYMBOL` varchar(10) NOT NULL,
+  `TIME` datetime NOT NULL,
+  `OPEN` double DEFAULT NULL,
+  `CLOSE` double DEFAULT NULL,
+  `HIGH` double DEFAULT NULL,
+  `LOW` double DEFAULT NULL,
+  `ADJUSTED_CLOSE` double DEFAULT NULL,
+  `DIVIDEND_AMOUNT` double DEFAULT NULL,
+  `VOLUME` double DEFAULT NULL,
+  PRIMARY KEY (`STOCK_SYMBOL`,`TIME`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

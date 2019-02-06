@@ -1,6 +1,8 @@
 package action;
 
 import dao.FinancialDataDao;
+import entitiy.WeeklyPrices;
+import entitiy.WeeklyPricesAdjusted;
 import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,19 @@ public class LoadDataAction implements IAction{
                 log.info(url);
                 //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
                 //financialDataDao.insert(wp);
+                try{
+                    WeeklyPricesAdjusted wp=restTemplate.getForObject(url,WeeklyPricesAdjusted.class);
+                    System.out.println(wp);
+                    financialDataDao.insertAdjusted(wp);
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.sleep(65000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             };
             executorService.submit(r);
@@ -39,7 +54,7 @@ public class LoadDataAction implements IAction{
         }
         executorService.shutdown();
         try{
-            executorService.awaitTermination(5, TimeUnit.MINUTES);
+            executorService.awaitTermination(200, TimeUnit.MINUTES);
         }
         catch(java.lang.InterruptedException e){
             e.printStackTrace();

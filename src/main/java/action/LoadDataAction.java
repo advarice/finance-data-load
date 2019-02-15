@@ -1,11 +1,13 @@
 package action;
 
 import dao.FinancialDataDao;
+import entitiy.DailyPricesAdjusted;
 import entitiy.WeeklyPrices;
 import entitiy.WeeklyPricesAdjusted;
 import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.ExecutorService;
@@ -25,19 +27,25 @@ public class LoadDataAction implements IAction{
     @Autowired
     private FinancialDataDao financialDataDao;
 
+    @Value("${financial.load.type}")
+    String loadType;
+
     @Override
     public void action() {
         ThreadFactory tf = new ThreadFactoryBuilder().setNameFormat("Thread --%d").build();
         ExecutorService executorService= Executors.newFixedThreadPool(4,tf);
+        financialDataDao.insertFinancialDataLoadMetaData(loadType);
+        int loadId=financialDataDao.getLoadId();
         for(String url:actionModel.getUrls()){
             Runnable r =()->{
                 log.info(url);
                 //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
                 //financialDataDao.insert(wp);
                 try{
-                    WeeklyPricesAdjusted wp=restTemplate.getForObject(url,WeeklyPricesAdjusted.class);
+
+                    DailyPricesAdjusted wp=restTemplate.getForObject(url,DailyPricesAdjusted.class);
                     System.out.println(wp);
-                    financialDataDao.insertAdjusted(wp);
+                    financialDataDao.insertDailyAdjujsted(wp,loadId);
                 }
                 catch(Exception e){
                     e.printStackTrace();

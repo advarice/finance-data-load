@@ -23,7 +23,7 @@ public class BuildRestUrlAction implements IAction{
         symbols= financialDataDao.getRandStockSymbol(500);
 
         for(String symbol:symbols){
-            actionModel.getUrls().add(String.format("https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=%s&apikey=placeholder", symbol));
+            actionModel.getUrls().add(String.format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&outputsize=full&apikey=TRZ1R1UD4XHBCMQK", symbol));
         }
     }
 }

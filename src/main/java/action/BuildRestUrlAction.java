@@ -20,10 +20,14 @@ public class BuildRestUrlAction implements IAction{
     @Override
     public void action() {
         //load n number of stocks information to the database
-        symbols= financialDataDao.getRandStockSymbol(500);
+        symbols= financialDataDao.getRandStockSymbol(1200);
 
+        int apiKeysSize= actionModel.getKeys().size();
+        int currentKey=0;
         for(String symbol:symbols){
-            actionModel.getUrls().add(String.format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&outputsize=full&apikey=TRZ1R1UD4XHBCMQK", symbol));
+            actionModel.getUrls().add(String.format("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=%s&outputsize=full&apikey=%s", symbol,actionModel.getKeys().get(currentKey)));
+            currentKey++;
+            currentKey=currentKey%apiKeysSize;
         }
     }
 }

@@ -33,7 +33,7 @@ public class LoadDataAction implements IAction{
     @Override
     public void action() {
         ThreadFactory tf = new ThreadFactoryBuilder().setNameFormat("Thread --%d").build();
-        ExecutorService executorService= Executors.newFixedThreadPool(4,tf);
+        ExecutorService executorService= Executors.newFixedThreadPool(4*actionModel.getKeys().size(),tf);
         financialDataDao.insertFinancialDataLoadMetaData(loadType);
         int loadId=financialDataDao.getLoadId();
         for(String url:actionModel.getUrls()){
@@ -41,20 +41,29 @@ public class LoadDataAction implements IAction{
                 log.info(url);
                 //WeeklyPrices wp= restTemplate.getForObject(url, WeeklyPrices.class);
                 //financialDataDao.insert(wp);
+                long lStartTime = System.currentTimeMillis();
                 try{
 
                     DailyPricesAdjusted wp=restTemplate.getForObject(url,DailyPricesAdjusted.class);
-                    System.out.println(wp);
                     financialDataDao.insertDailyAdjujsted(wp,loadId);
                 }
                 catch(Exception e){
                     e.printStackTrace();
                 }
-                try {
-                    Thread.sleep(65000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                long lEndTime = System.currentTimeMillis();
+                long elapsed = lEndTime - lStartTime;
+
+                if(elapsed>65000){
+
                 }
+                else{
+                    try {
+                        Thread.sleep(65000-elapsed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
             };
             executorService.submit(r);

@@ -7,6 +7,8 @@ import action.LoadDataAction;
 import dao.FinancialDataDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,9 +28,9 @@ public class AppConfig {
     public DriverManagerDataSource dataSource(){
         DriverManagerDataSource ds=new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/stock_analysis");
-        ds.setUsername("root");
-        ds.setPassword("");
+        ds.setUrl("jdbc:mysql://fde.czduruoyy9zb.us-east-2.rds.amazonaws.com/fde?autoReconnect=true&useSSL=false");
+        ds.setUsername("admin");
+        ds.setPassword("Abc-12345Abc-12345");
         return ds;
     }
 
@@ -63,6 +65,10 @@ public class AppConfig {
         actionList.add(buildRestUrlAction());
         actionList.add(loadDataAction());
         return actionList;
+    }
+
+    @Bean public ConversionService conversionService() {
+        return new DefaultConversionService();
     }
 
 }
